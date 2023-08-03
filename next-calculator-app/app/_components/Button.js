@@ -6,6 +6,11 @@ import { CalcContext } from "../_context/CalcContext";
 export default function Button({ value }) {
 	const { calc, setCalc } = useContext(CalcContext);
 
+	const toLocaleString = (num) =>
+		String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+
+	const removeSpaces = (num) => num.toString().replace(/\s/g, "");
+
 	const decimalClick = () => {
 		setCalc({
 			...calc,
@@ -22,11 +27,24 @@ export default function Button({ value }) {
 	};
 
 	const reverseSignClick = () => {
-		setCalc({ num: -calc.num });
+		setCalc({
+			...calc,
+			num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
+			res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
+			sign: "",
+		});
 	};
 
-	const deleteClick = () => {
-		setCalc({ ...calc, num: calc.num.slice(0, -1) });
+	const percentClick = () => {
+		let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
+		let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
+
+		setCalc({
+			...calc,
+			num: (num /= Math.pow(100, 1)),
+			res: (res /= Math.pow(100, 1)),
+			sign: "",
+		});
 	};
 
 	const operatorClick = () => {
@@ -35,39 +53,21 @@ export default function Button({ value }) {
 			res: !calc.res && calc.num ? calc.num : calc.res,
 			num: 0,
 		});
-		console.log(calc.sign, calc.res, calc.num);
 	};
 
-	const equalsClick = () => {
-		if (calc.res && calc.num) {
-			const math = (a, b, sign) => {
-				const result = {
-					"+": (a, b) => a + b,
-					"-": (a, b) => a - b,
-					"⨉": (a, b) => a * b,
-					"÷": (a, b) => a / b,
-				};
-				return result[sign](a, b);
-			};
-			setCalc({
-				res: math(calc.res, calc.num, calc.sign),
-				sign: "",
-				num: 0,
-			});
-		}
-	};
-
-	const numbersClick = () => {
-		if (calc.num !== 0) {
+	const numbersClick = (val) => {
+		if (calc.num.toString().length < 7) {
 			setCalc({
 				...calc,
-				num: calc.num + value,
+				num:
+					calc.num === 0 && val === "0"
+						? "0"
+						: removeSpaces(calc.num) % 1 === 0
+						? toLocaleString(Number(calc.num + val))
+						: toLocaleString(calc.num + val),
+				res: !calc.sign ? 0 : calc.res,
 			});
 		}
-		setCalc({
-			...calc,
-			num: value,
-		});
 	};
 
 	const handleBtnClick = (e) => {
@@ -79,14 +79,12 @@ export default function Button({ value }) {
 			clearClick();
 		} else if (val === "+/-") {
 			reverseSignClick();
-		} else if (val === "DEL") {
-			deleteClick();
+		} else if (val === "%") {
+			percentClick();
 		} else if (val === "÷" || val === "⨉" || val === "-" || val === "+") {
 			operatorClick();
-		} else if (val === "=") {
-			equalsClick();
 		} else {
-			numbersClick();
+			numbersClick(val);
 		}
 	};
 
