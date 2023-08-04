@@ -1,6 +1,6 @@
 # Calculator App
 
-Calculator app built with Next.js, TailwindCSS, and JavaScript.
+Calculator application built with Next.js (React), TailwindCSS, and JavaScript.
 
 ![calculator with no number](/next-calculator-app/public/static/calculator-empty.png)
 ![calculator with numbers](/next-calculator-app/public/static/calculator-nonempty.png)
