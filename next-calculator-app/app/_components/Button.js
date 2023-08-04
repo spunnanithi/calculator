@@ -6,11 +6,6 @@ import { CalcContext } from "../_context/CalcContext";
 export default function Button({ value }) {
 	const { calc, setCalc } = useContext(CalcContext);
 
-	const toLocaleString = (num) =>
-		String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-
-	const removeSpaces = (num) => num.toString().replace(/\s/g, "");
-
 	const decimalClick = () => {
 		setCalc({
 			...calc,
@@ -29,15 +24,15 @@ export default function Button({ value }) {
 	const reverseSignClick = () => {
 		setCalc({
 			...calc,
-			num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
-			res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
+			num: calc.num ? calc.num * -1 : 0,
+			res: calc.res ? calc.res * -1 : 0,
 			sign: "",
 		});
 	};
 
 	const percentClick = () => {
-		let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
-		let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
+		let num = calc.num ? parseFloat(calc.num) : 0;
+		let res = calc.res ? parseFloat(calc.res) : 0;
 
 		setCalc({
 			...calc,
@@ -56,15 +51,17 @@ export default function Button({ value }) {
 	};
 
 	const numbersClick = (val) => {
-		if (calc.num.toString().length < 7) {
+		// allow number to be clicked as long as it is less than 15 digits
+		if (calc.num.toString().length < 15) {
+			// change to allow larger numbers during number click
 			setCalc({
 				...calc,
 				num:
 					calc.num === 0 && val === "0"
 						? "0"
-						: removeSpaces(calc.num) % 1 === 0
-						? toLocaleString(Number(calc.num + val))
-						: toLocaleString(calc.num + val),
+						: calc.num % 1 === 0
+						? Number(calc.num + val)
+						: calc.num + val,
 				res: !calc.sign ? 0 : calc.res,
 			});
 		}

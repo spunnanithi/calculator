@@ -13,11 +13,6 @@ export default function Keypad() {
 	const fourth = ["1", "2", "3", "+"];
 	const fifth = ["0", "."];
 
-	const toLocaleString = (num) =>
-		String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-
-	const removeSpaces = (num) => num.toString().replace(/\s/g, "");
-
 	const handleEqualsClick = () => {
 		if (calc.res && calc.num) {
 			const math = (a, b, sign) => {
@@ -35,13 +30,7 @@ export default function Keypad() {
 				res:
 					calc.num === "0" && calc.sign === "/"
 						? "Can't divide by 0"
-						: toLocaleString(
-								math(
-									Number(removeSpaces(calc.res)),
-									Number(removeSpaces(calc.num)),
-									calc.sign
-								)
-						  ),
+						: math(Number(calc.res), Number(calc.num), calc.sign),
 				sign: "",
 			});
 		}
