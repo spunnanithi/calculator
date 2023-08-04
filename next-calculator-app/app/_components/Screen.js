@@ -14,8 +14,9 @@ export default function Screen() {
 			return "";
 		}
 
+		// adjust when the function will trigger
 		if (numberString.length > 6) {
-			return number.toExponential(2); // You can adjust the decimal places as needed
+			return number.toExponential(2); // adjust the decimal places as needed
 		}
 
 		return numberString;

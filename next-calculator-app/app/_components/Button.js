@@ -6,6 +6,7 @@ import { CalcContext } from "../_context/CalcContext";
 export default function Button({ value }) {
 	const { calc, setCalc } = useContext(CalcContext);
 
+	// handle decimal click logic
 	const decimalClick = () => {
 		setCalc({
 			...calc,
@@ -13,6 +14,7 @@ export default function Button({ value }) {
 		});
 	};
 
+	// handle clear click logic
 	const clearClick = () => {
 		setCalc({
 			num: 0,
@@ -21,6 +23,7 @@ export default function Button({ value }) {
 		});
 	};
 
+	// handle reverse sign click logic
 	const reverseSignClick = () => {
 		setCalc({
 			...calc,
@@ -30,6 +33,7 @@ export default function Button({ value }) {
 		});
 	};
 
+	// handle percent click logic
 	const percentClick = () => {
 		let num = calc.num ? parseFloat(calc.num) : 0;
 		let res = calc.res ? parseFloat(calc.res) : 0;
@@ -42,7 +46,8 @@ export default function Button({ value }) {
 		});
 	};
 
-	const operatorClick = () => {
+	// handle sign click logic
+	const signClick = () => {
 		setCalc({
 			sign: value,
 			res: !calc.res && calc.num ? calc.num : calc.res,
@@ -50,6 +55,7 @@ export default function Button({ value }) {
 		});
 	};
 
+	// handle numbers click logic
 	const numbersClick = (val) => {
 		// allow number to be clicked as long as it is less than 15 digits
 		if (calc.num.toString().length < 15) {
@@ -67,6 +73,7 @@ export default function Button({ value }) {
 		}
 	};
 
+	// general click handler to handle all clicks and invoke other click handlers accordingly
 	const handleBtnClick = (e) => {
 		const val = e.target.value;
 
@@ -79,7 +86,7 @@ export default function Button({ value }) {
 		} else if (val === "%") {
 			percentClick();
 		} else if (val === "÷" || val === "⨉" || val === "-" || val === "+") {
-			operatorClick();
+			signClick();
 		} else {
 			numbersClick(val);
 		}

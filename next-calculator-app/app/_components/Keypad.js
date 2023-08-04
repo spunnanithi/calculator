@@ -7,12 +7,14 @@ import { CalcContext } from "../_context/CalcContext";
 export default function Keypad() {
 	const { calc, setCalc } = useContext(CalcContext);
 
-	const first = ["C", "+/-", "%", "÷"];
-	const second = ["7", "8", "9", "⨉"];
-	const third = ["4", "5", "6", "-"];
-	const fourth = ["1", "2", "3", "+"];
-	const fifth = ["0", "."];
+	// used to populate keypad
+	const first_row = ["C", "+/-", "%", "÷"];
+	const second_row = ["7", "8", "9", "⨉"];
+	const third_row = ["4", "5", "6", "-"];
+	const fourth_row = ["1", "2", "3", "+"];
+	const fifth_row = ["0", "."];
 
+	// handle click handler for "=" sign
 	const handleEqualsClick = () => {
 		if (calc.res && calc.num) {
 			const math = (a, b, sign) => {
@@ -40,29 +42,31 @@ export default function Keypad() {
 		<div data-testid="keypad">
 			<div className="w-full bg-gradient-to-b from-indigo-400 to-indigo-500">
 				<div className="flex w-full">
-					{first.map((value) => {
+					{first_row.map((value) => {
 						return <Button key={value} value={value} />;
 					})}
 				</div>
 				<div className="flex w-full">
-					{second.map((value) => {
+					{second_row.map((value) => {
 						return <Button key={value} value={value} />;
 					})}
 				</div>
 				<div className="flex w-full">
-					{third.map((value) => {
+					{third_row.map((value) => {
 						return <Button key={value} value={value} />;
 					})}
 				</div>
 				<div className="flex w-full">
-					{fourth.map((value) => {
+					{fourth_row.map((value) => {
 						return <Button key={value} value={value} />;
 					})}
 				</div>
 				<div className="flex w-full">
-					{fifth.map((value) => {
+					{fifth_row.map((value) => {
 						return <Button key={value} value={value} />;
 					})}
+
+					{/* equals button */}
 					<div className="w-2/4 border-r border-indigo-400">
 						<button
 							onClick={handleEqualsClick}
