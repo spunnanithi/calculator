@@ -48,7 +48,7 @@ export default function Keypad() {
 	};
 
 	return (
-		<>
+		<div data-testid="keypad">
 			<div className="w-full bg-gradient-to-b from-indigo-400 to-indigo-500">
 				<div className="flex w-full">
 					{first.map((value) => {
@@ -83,6 +83,6 @@ export default function Keypad() {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
